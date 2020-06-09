@@ -4,10 +4,19 @@
     <div v-if="loadingReady">Loading characters.</div>
     <div v-if="loadingError">Error loading characters.</div>
     <div v-if="loadingSuccess">
+      <div class="v-character-list__favourites">
+
+      </div>
       <div class="v-character-list__search">
-        <label>
-          <input v-model.trim="searchQuery" placeholder="Filter through characters" class="v-character-list__search-input" type="search"/>
-        </label>
+        <input v-model.trim="searchQuery" placeholder="Filter through characters by..." class="v-character-list__search-input" type="search"/>
+        <select name="" id="" class="v-character-list__search-type" v-model="filterType">
+          <option selected value="name">Name</option>
+          <option value="height">Height</option>
+          <option value="mass">Mass</option>
+          <option value="hair_color">Hair color</option>
+          <option value="skin_color">Skin color</option>
+          <option value="eye_color">Eye color</option>
+        </select>
       </div>
       <ul class="v-character-list__list">
         <li class="v-character-list__item" :key="char.created" v-for="char in filteredChars">
@@ -29,7 +38,8 @@ export default {
   },
   data() {
     return {
-      searchQuery: ''
+      searchQuery: '',
+      filterType: 'name'
     }
   },
   created() {
@@ -45,7 +55,8 @@ export default {
   computed: {
     filteredChars() {
       return this.chars.filter(char => {
-        const lowercaseName = char.name.toLowerCase()
+        const filterType = this.filterType ? this.filterType : 'name'
+        const lowercaseName = char[filterType].toLowerCase()
         const lowercaseQuery = this.searchQuery.toLowerCase()
         return lowercaseName.includes(lowercaseQuery)
       })
@@ -61,10 +72,13 @@ export default {
   @apply text-center font-bold text-white text-3xl my-4;
 }
 .v-character-list__search {
-  @apply mb-4;
+  @apply my-4 flex justify-between items-center sticky top-0 bg-white p-3 shadow-lg rounded-lg;
 }
 .v-character-list__search-input {
-  @apply py-3 px-4 rounded-lg w-full bg-gray-300;
+  @apply py-3 px-4 rounded-lg w-full bg-gray-300 mr-2 shadow-inner;
+}
+.v-character-list__search-type {
+  @apply py-3 px-4 rounded-lg bg-gray-300;
 }
 .v-character-list__item {
   + .v-character-list__item {

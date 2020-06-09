@@ -32,13 +32,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@tailwind breakpoints;
 .c-character-card {
-  @apply border-solid border border-gray-300 shadow-md rounded-lg p-4 bg-white flex justify-between;
+  @apply border-solid border border-gray-300 shadow-md rounded-lg p-5 bg-white;
+
+  @screen sm {
+    @apply flex justify-between;
+  }
 }
 .c-character-card__details {}
 .c-character-card__actions {}
 .c-character-card__action {
-  @apply bg-white text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow;
+  @apply bg-white text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow w-full mt-2;
+
+  @screen sm {
+    @apply mt-0;
+  }
 }
 .c-character-card__title {
   @apply text-2xl font-semibold;
