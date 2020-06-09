@@ -4,9 +4,6 @@
     <div v-if="loadingReady">Loading characters.</div>
     <div v-if="loadingError">Error loading characters.</div>
     <div v-if="loadingSuccess">
-      <div class="v-character-list__favourites">
-
-      </div>
       <div class="v-character-list__search">
         <input v-model.trim="searchQuery" placeholder="Filter through characters by..." class="v-character-list__search-input" type="search"/>
         <select name="" id="" class="v-character-list__search-type" v-model="filterType">
@@ -18,6 +15,13 @@
           <option value="eye_color">Eye color</option>
         </select>
       </div>
+      <div class="v-character-list__favourites">
+        <h2 class="v-character-list__sub-title">Favourites <span>({{ allFavourites.length }})</span></h2>
+        <ul v-if="allFavourites.length">
+          <li :key="fave.name" v-for="fave in allFavourites">{{ fave.name }}</li>
+        </ul>
+        <p v-else>You currently have no favourites.</p>
+      </div>
       <ul class="v-character-list__list">
         <li class="v-character-list__item" :key="char.created" v-for="char in filteredChars">
           <CharacterCard :character="char"/>
@@ -27,7 +31,7 @@
   </div>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import loadingState from '../mixins/loadingState.mixin'
 import CharacterCard from "../components/CharacterCard"
 export default {
@@ -61,7 +65,8 @@ export default {
         return lowercaseName.includes(lowercaseQuery)
       })
     },
-    ...mapState(['chars'])
+    ...mapState(['chars']),
+    ...mapGetters(['allFavourites'])
   }
 }
 </script>
@@ -70,6 +75,12 @@ export default {
 .v-character-list {}
 .v-character-list__title {
   @apply text-center font-bold text-white text-3xl my-4;
+}
+.v-character-list__sub-title {
+  @apply text-xl font-semibold;
+}
+.v-character-list__favourites {
+  @apply p-4 bg-white shadow my-4 rounded-lg;
 }
 .v-character-list__search {
   @apply my-4 flex justify-between items-center sticky top-0 bg-white p-3 shadow-lg rounded-lg;

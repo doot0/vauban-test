@@ -21,6 +21,14 @@ export default new Vuex.Store({
     },
     SET_FAVOURITES (state, data) {
       state.favourites = data
+    },
+    ADD_FAVOURITE (state, data) {
+      if (!state.favourites.includes(data.name)) {
+        state.favourites.push(data)
+      }
+    },
+    REMOVE_FAVOURITE (state, data) {
+      state.favourites = state.favourites.filter(fave => fave.name !== data.name)
     }
   },
   getters: {
